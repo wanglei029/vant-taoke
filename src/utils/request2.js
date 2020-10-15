@@ -30,10 +30,12 @@ request.defaults.transformResponse = [function (data) {
 request.interceptors.request.use(
   function (config) {
     const user = store.state.user
+    /* 如果用户已登录统一为接口设置token信息 */
     if (user) {
       config.headers.Authorization = `Bearer ${user.token}`
     }
     // Do something before request is sent
+    // 处理完成之后一定要将config返回否则就会停在这里
     return config
   },
   function (error) {

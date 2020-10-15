@@ -7,32 +7,33 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
-      /* 媒体查询 */
-      /* PC >=992px */
-      @media screen and (min-width: 992px) {
-
-        #app{
-          max-width: 640px;
-          width: 100%;
-          margin: 0 auto;
-        }
-      }
-      /* PAD 768px <= 屏幕 <= 991px */
-      @media screen and (min-width: 768px) and (max-width:991px) {
-        #app{
-          width:100%;
-          margin: 0 auto;
-          /* background-color: yellow; */
-        }
-      }
-      /* phone <=767px */
-      @media screen and (max-width:767px) {
-        #app{
-          width:100%;
-          margin: 0 auto;
-          /* background-color: blue; */
-        }
-      }
+     /* 媒体查询 */
+/* PC >=992px */
+/* @media screen and (min-width: 992px) {
+   #app {
+    max-width: 375px;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid red;
+    position: relative;
+  }
+} */
+/* PAD 768px <= 屏幕 <= 991px */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  #app {
+    width: 100%;
+    margin: 0 auto;
+    /* background-color: yellow; */
+  }
+}
+/* phone <=767px */
+@media screen and (max-width: 767px) {
+  #app {
+    width: 100%;
+    margin: 0 auto;
+    /* background-color: blue; */
+  }
+}
     </style>
   </head>
   <body>

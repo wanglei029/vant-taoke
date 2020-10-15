@@ -1,7 +1,11 @@
 <template>
   <div class='container'>
-    Home
-    <van-button type="primary">按钮</van-button>
+    <van-nav-bar class="app-nav-bar">
+      <van-button class="search-btn"
+                  slot="title"
+                  icon="search"
+                  round>搜索</van-button>
+    </van-nav-bar>
   </div>
 </template>
 
@@ -45,4 +49,23 @@ export default {
 
 </script>
 <style lang='less' scoped>
+.container {
+  /deep/ .van-nav-bar__title {
+    max-width: unset;
+  }
+  .search-btn {
+    width: 277px;
+    height: 32px;
+    background-color: #f75462;
+    color: #fff;
+    border: none;
+
+    .van-icon {
+      font-size: 16px;
+    }
+    .van-button__text {
+      font-size: 14px;
+    }
+  }
+}
 </style>
