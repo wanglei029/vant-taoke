@@ -7,11 +7,12 @@
                   round>搜索</van-button>
     </van-nav-bar>
     <van-tabs v-model="active"
-              class="channel-tabs">
-      <van-tab v-for="channel in channels"
-               :key="channel.id"
-               :title="channel.name">
-        <article-list :channel='channel'></article-list>
+              class="channel-tabs"
+              @click='onClickTab'>
+      <van-tab v-for="category in categoryList"
+               :key="category.cid"
+               :title="category.cname">
+        <goods-list :category='category'></goods-list>
       </van-tab>
       <!-- tab右侧插槽 汉堡图标 -->
       <!-- 汉堡图标会遮挡列表最后的位置 添加占位元素 -->
@@ -19,44 +20,50 @@
            class="wap-nav-placeholder"></div>
       <div slot="nav-right"
            class="wap-nav-wrap"
-           @click="isChannelEditShow=true">
+           @click="isCategoryEditShow=true">
         <van-icon name="wap-nav" />
       </div>
     </van-tabs>
-    <van-popup v-model="isChannelEditShow"
+    <!-- 弹出层 -->
+    <van-popup v-model="isCategoryEditShow"
                position="top"
                closeable
                close-icon-position="top-left"
                get-container="body"
                style="height:100%"
                class="channel-edit-popup">
-      <channel-edit :user-channels="channels"
-                    :active='active'
-                    @close='isChannelEditShow=false'
-                    @update-active="onUpdateActive"></channel-edit>
+      <category-edit :category="categoryList"
+                     @click="isCategoryEditShow=false"
+                     @update-active='active=$event'></category-edit>
     </van-popup>
   </div>
 </template>
 
 <script>
+import { getGoodsList, getExplosiveGoodsList, getSuperCategory } from '@/api/goods'
 import { getUserChannels } from '@/api/user'
-import ArticleList from './components/article-list'
-import ChannelEdit from './components/channel-edit'
+import GoodsList from './components/goods-list'
+import CategoryEdit from './components/category-edit'
 export default {
-  name: 'Home',
+  name: 'Taoke',
   props: {},
-  components: { ArticleList, ChannelEdit },
+  components: { GoodsList, CategoryEdit },
   data () {
     return {
       active: 0,
-      channels: [], // 商品分类列表
-      isChannelEditShow: true // 控制编辑频道的显示
+      categoryList: [], // 商品分类列表
+      isCategoryEditShow: false // 商品分类编辑
     }
   },
 
   computed: {},
 
   created () {
+    /* 加载商品列表数据 */
+    // this.loadGoodsList()
+    // this.loadExplosiveGoodsList()
+    /* 加载商品超级分类数据 */
+    this.loadSuperCategory()
     /* 加载文章频道数据 */
     this.loadUserChannels()
   },
@@ -64,13 +71,31 @@ export default {
   mounted () { },
 
   methods: {
+    async loadGoodsList (pageId = '1') {
+      const res = await getGoodsList(pageId)
+      console.log(res)
+    },
+    async loadExplosiveGoodsList (pageId = '1') {
+      const pageSize = 10
+      const params = { pageId, pageSize }
+      const res = await getExplosiveGoodsList(params)
+      console.log(res)
+    },
+    async loadSuperCategory () {
+      const { data } = await getSuperCategory()
+      console.log(data)
+      this.categoryList = data.data
+    },
     /* 加载用户频道列表 */
     async loadUserChannels () {
       const { data } = await getUserChannels()
-      this.channels = data.data.channels
+      console.log(data)
     },
-    onUpdateActive (index) {
-      this.active = index
+    onClickTab (event) {
+      console.log(event)
+      // tabs.addEventListener('click', function (event) {
+      //   console.log(event)
+      // }, false)
     }
   },
 
@@ -94,7 +119,7 @@ export default {
 
     .van-icon {
       font-size: 16px;
-      color: #333;
+      color: #222;
     }
     .van-button__text {
       font-size: 14px;
@@ -109,7 +134,7 @@ export default {
       width: 15px !important;
       height: 3px;
       background: #ee0a24;
-      bottom: 20px;
+      bottom: 22px;
     }
     .wap-nav-placeholder {
       width: 33px;

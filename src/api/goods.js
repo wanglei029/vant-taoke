@@ -40,3 +40,13 @@ export function getCollectionList (params) {
     params
   })
 }
+/**
+ * 获取超级分类
+ */
+export function getSuperCategory (params) {
+  return request({
+    method: 'GET',
+    url: '/api/category/get-super-category',
+    params
+  })
+}

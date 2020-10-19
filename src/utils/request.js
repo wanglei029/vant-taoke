@@ -27,25 +27,23 @@ function randomn (n) {
   if (n > 21) return null
   return parseInt((Math.random() + 1) * Math.pow(10, n - 1))
 }
-const nonce = randomn(6)
-// Timer：毫秒级时间戳
-const timer = new Date().getTime()
-// console.log(timer)
-// 验签步骤：
-const appSecret = 'fbd96b5305266ee2a1ace48763d14178'// 应用的Secret
-// const version = 'v1.2.0' // API接口版本号
-const appKey = '5da24dcbcde8b'// 应用分配的appKey
-// 1、将当前应用的appkey，appsecret，nonce参数和timer参数进行组装，
-// 拼接成字符串：appKey=xxx&timer=xxx&nonce=xxx&key=xxx （key对应appsecret）
-const str = `appKey=${appKey}&timer=${timer}&nonce=${nonce}&key=${appSecret}`
-// 2、将刚才拼接的字符串进行md5加密并将加密结果转成大写
-const signRan = md5(str).toLocaleUpperCase()
 
 // 请求拦截器
 request.interceptors.request.use(function (config) {
   const appKey = '5da24dcbcde8b'
   const version = 'v1.2.3'
-  // const timer = new Date().getTime()
+  const nonce = randomn(6)
+  // Timer：毫秒级时间戳
+  const timer = new Date().getTime()
+  // console.log(timer)
+  // 验签步骤：
+  const appSecret = 'fbd96b5305266ee2a1ace48763d14178'// 应用的Secret
+  // const version = 'v1.2.0' // API接口版本号
+  // 1、将当前应用的appkey，appsecret，nonce参数和timer参数进行组装，
+  // 拼接成字符串：appKey=xxx&timer=xxx&nonce=xxx&key=xxx （key对应appsecret）
+  const str = `appKey=${appKey}&timer=${timer}&nonce=${nonce}&key=${appSecret}`
+  // 2、将刚才拼接的字符串进行md5加密并将加密结果转成大写
+  const signRan = md5(str).toLocaleUpperCase()
 
   // 判断请求的类型
   // 如果是post请求就把默认参数拼到data里面
