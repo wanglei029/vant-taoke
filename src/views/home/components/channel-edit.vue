@@ -17,7 +17,7 @@
                      v-for="(channel,index) in userChannels"
                      :key="channel.id"
                      :text="channel.name"
-                     @click="onUserChannelClick(index)" />
+                     @click="onUserChannelClick(channel,index)" />
     </van-grid>
     <van-cell center
               :border='false'>
@@ -35,7 +35,9 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, addUserChannel, deleteUserChannel } from '@/api/channel'
+import { mapGetters } from 'vuex'
+import { setItem } from '@/utils/storage'
 export default {
   name: 'ChannelEdit',
   props: {
@@ -57,6 +59,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['user']),
     // 推荐的所有频道
     recommendChannels () {
       return this.allChannels.filter(channel => {
@@ -79,19 +82,32 @@ export default {
       console.log(data)
       this.allChannels = data.data.channels
     },
-    onAdd (channel) {
+    async onAdd (channel) {
       this.userChannels.push(channel)
+      // 数据持久化
+      if (this.user) {
+        // 登录了数据要存储到线上
+        const { data } = await addUserChannel({
+          channels: [
+            { id: channel.id, seq: this.userChannels.length }
+          ]
+        })
+        console.log(data)
+      } else {
+        // 用户未登录数据存储到本地
+        setItem('user-channels', this.userChannels)
+      }
     },
-    onUserChannelClick (index) {
+    onUserChannelClick (channel, index) {
       // 编辑状态，删除频道
       if (this.isEdit && index !== 0) {
-        this.deleteChannel(index)
+        this.deleteChannel(channel, index)
       } else {
         // 非编辑状态
         this.switchChannel(index)
       }
     },
-    deleteChannel (index) {
+    async deleteChannel (channel, index) {
       console.log('删除频道')
       // 如果删除当前频道之前的频道
       if (index <= this.active) {
@@ -99,6 +115,16 @@ export default {
         this.$emit('update-active', this.active - 1)
       }
       this.userChannels.splice(index, 1)
+
+      // 数据持久化
+      if (this.user) {
+        // 登录了数据要存储到线上
+        const { data } = await deleteUserChannel(channel.id)
+        console.log(data)
+      } else {
+        // 用户未登录数据存储到本地
+        setItem('user-channels', this.userChannels)
+      }
     },
     switchChannel (index) {
       console.log('切换频道')

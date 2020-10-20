@@ -4,7 +4,8 @@
       <van-button class="search-btn"
                   slot="title"
                   icon="search"
-                  round>搜索</van-button>
+                  round
+                  to="search">搜索</van-button>
     </van-nav-bar>
     <van-tabs v-model="active"
               class="channel-tabs">
@@ -42,6 +43,8 @@
 import { getUserChannels } from '@/api/user'
 import ArticleList from './components/article-list'
 import ChannelEdit from './components/channel-edit'
+import { mapGetters } from 'vuex'
+import { getItem } from '@/utils/storage'
 export default {
   name: 'Home',
   props: {},
@@ -54,7 +57,9 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    ...mapGetters(['user'])
+  },
 
   created () {
     /* 加载文章频道数据 */
@@ -66,8 +71,27 @@ export default {
   methods: {
     /* 加载用户频道列表 */
     async loadUserChannels () {
-      const { data } = await getUserChannels()
-      this.channels = data.data.channels
+      let channels = []
+      if (this.user) {
+        // 用户已登录
+        const { data } = await getUserChannels()
+        channels = data.data.channels
+      } else {
+        // 没有登录 判断是否有本地存储的数据
+        const localChannels = getItem('user-channels')
+        if (localChannels) {
+          // 有本地存储的数据
+          channels = localChannels
+        } else {
+          // 没有本地存储的数据 请求获取默认频道列表
+          const { data } = await getUserChannels()
+          channels = data.data.channels
+        }
+      }
+      // 处理好的数据放到data中
+      this.channels = channels
+      // const { data } = await getUserChannels()
+      // this.channels = data.data.channels
     },
     onUpdateActive (index) {
       this.active = index
