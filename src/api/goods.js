@@ -50,3 +50,13 @@ export function getSuperCategory (params) {
     params
   })
 }
+/**
+ * 获取搜索联想词
+ */
+export function getSearchSuggestions (params) {
+  return request({
+    method: 'GET',
+    url: '/api/goods/search-suggestion',
+    params
+  })
+}

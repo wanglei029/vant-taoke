@@ -4,13 +4,13 @@
               v-for="(str,index) in suggestions"
               :key="index">
       <div slot="title"
-           v-html="heightlight (str)"></div>
+           v-html="heightlight(str.kw)"></div>
     </van-cell>
   </div>
 </template>
 
 <script>
-import { getSearchSuggestions } from '@/api/search'
+import { getSearchSuggestions } from '@/api/goods'
 import { debounce } from 'lodash'
 export default {
   name: 'search-suggestion',
@@ -23,7 +23,8 @@ export default {
   components: {},
   data () {
     return {
-      suggestions: [] // 联想建议数据列表
+      suggestions: [], // 联想建议词列表
+      htmlStr: 'hello<span style="color:red">world</span>'
     }
   },
 
@@ -31,7 +32,9 @@ export default {
 
   created () { },
 
-  mounted () { },
+  mounted () {
+
+  },
 
   methods: {
     /* 高亮显示搜索词 */
@@ -48,16 +51,14 @@ export default {
     searchText: {
       handler: debounce(async function (val) {
         console.log(val)
-        const { data } = await getSearchSuggestions(val)
+        const params = {
+          keyWords: val,
+          type: 2
+        }
+        const { data } = await getSearchSuggestions(params)
         console.log(data)
-        this.suggestions = data.data.options
+        this.suggestions = data.data
       }, 200),
-      // async handler (val) {
-      //   console.log(val)
-      //   const { data } = await getSearchSuggestions(val)
-      //   console.log(data)
-      //   this.suggestions = data.data.options
-      // },
       immediate: true // 该回调函数监听开始之后立即调用
     }
   }

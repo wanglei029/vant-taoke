@@ -52,8 +52,17 @@ const routes = [
   },
   {
     path: '/taoke',
-    name: 'taoke',
-    component: () => import('@/views/taoke/taoke')
+    component: () => import('@/views/taoke/index'),
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/taoke/taoke')
+      },
+      {
+        path: 'search',
+        component: () => import('@/views/taoke/search/search')
+      }
+    ]
   }
 ]
 

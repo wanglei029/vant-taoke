@@ -4,7 +4,8 @@
       <van-button class="search-btn"
                   slot="title"
                   icon="search"
-                  round>搜索</van-button>
+                  round
+                  to="taoke/search">搜索</van-button>
     </van-nav-bar>
     <van-tabs v-model="active"
               class="channel-tabs"
