@@ -31,7 +31,8 @@ function randomn (n) {
 // 请求拦截器
 request.interceptors.request.use(function (config) {
   const appKey = '5da24dcbcde8b'
-  const version = 'v1.2.3'
+  // const version = 'v1.2.3'
+  const version = 'v2.1.2'
   const nonce = randomn(6)
   // Timer：毫秒级时间戳
   const timer = new Date().getTime()

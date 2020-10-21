@@ -62,8 +62,6 @@ export default {
       try {
         console.log(params)
         const { data } = await getGoodsList(params)
-        console.log(this.category)
-        console.log(data)
         const { list, pageId } = data.data
         console.log(data)
         this.goods.push(...list)

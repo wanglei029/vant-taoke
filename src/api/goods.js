@@ -23,10 +23,20 @@ export function getExplosiveGoodsList (params) {
 /**
  * 获取单品详情
  */
-export function getGoodsDetails (params) {
+export const getGoodsDetails = (params) => {
   return request({
     method: 'GET',
     url: 'api/goods/get-goods-details',
+    params
+  })
+}
+/**
+ * 获取单品详情
+ */
+export const getSimilerGoods = (params) => {
+  return request({
+    method: 'GET',
+    url: '/api/goods/list-similer-goods-by-open',
     params
   })
 }
@@ -58,5 +68,20 @@ export function getSearchSuggestions (params) {
     method: 'GET',
     url: '/api/goods/search-suggestion',
     params
+  })
+}
+/* 获取搜索结果 */
+export const getSearchResult = params => {
+  return request({
+    method: 'GET',
+    url: '/api/goods/get-dtk-search-goods',
+    params
+  })
+}
+/* 获取热搜记录 */
+export const getHotSearch = () => {
+  return request({
+    method: 'GET',
+    url: '/api/category/get-top100'
   })
 }

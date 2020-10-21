@@ -1,6 +1,10 @@
 <template>
   <div class='good-item-container'>
-    <van-cell class="product-card">
+    <van-cell class="product-card"
+              :to="{
+         name:'goods',
+         params:{id:goods.id,goodsId:goods.goodsId}
+       }">
       <div @click="selectItem(goods)">
         <div class="img-wrap">
           <img :src="goods.mainPic" />

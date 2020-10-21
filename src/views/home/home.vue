@@ -53,7 +53,7 @@ export default {
     return {
       active: 0,
       channels: [], // 商品分类列表
-      isChannelEditShow: true // 控制编辑频道的显示
+      isChannelEditShow: false // 控制编辑频道的显示
     }
   },
 

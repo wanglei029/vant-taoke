@@ -2,7 +2,8 @@
   <div class='search-suggestion-container'>
     <van-cell icon="search"
               v-for="(str,index) in suggestions"
-              :key="index">
+              :key="index"
+              @click="$emit('search',str)">
       <div slot="title"
            v-html="heightlight (str)"></div>
     </van-cell>

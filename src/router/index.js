@@ -46,6 +46,13 @@ const routes = [
     component: () => import('@/views/search/search')
   },
   {
+    path: '/article/:articleId',
+    name: 'article',
+    component: () => import('@/views/article/article'),
+    // 将动态路由参数映射到组件
+    props: true
+  },
+  {
     path: '/demo',
     name: 'demo',
     component: () => import('@/views/demo/demo')
@@ -61,6 +68,11 @@ const routes = [
       {
         path: 'search',
         component: () => import('@/views/taoke/search/search')
+      },
+      {
+        path: 'goods/:goodsId',
+        name: 'goods',
+        component: () => import('@/views/taoke/goods/goods')
       }
     ]
   }
