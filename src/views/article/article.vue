@@ -17,11 +17,13 @@
                  :src="article.aut_photo" />
       <div slot="label"
            class="pubdate">{{article.pubdate | relativeTime}}</div>
-      <van-button :type="article.is_followed?'default':'info'"
+      <van-button :type="article.is_followed?'default':'danger'"
                   class="follow-btn"
                   round
                   :icon="article.is_followed?'':'plus'"
-                  size="small">{{article.is_followed?'已关注':'关注'}}</van-button>
+                  size="small"
+                  :loading="isFollowLoading"
+                  @click="onFollow">{{article.is_followed?'已关注':'关注'}}</van-button>
     </van-cell>
     <div class="markdown-body"
          v-html="article.content"
@@ -34,7 +36,7 @@
 import './github-markdown.css'
 import { getArticleById } from '@/api/article'
 import { ImagePreview } from 'vant'
-
+import { addFollow, deleteFollow } from '@/api/user'
 export default {
   name: 'Article',
   props: {
@@ -47,7 +49,8 @@ export default {
   components: {},
   data () {
     return {
-      article: {}
+      article: {},
+      isFollowLoading: false
     }
   },
 
@@ -90,6 +93,20 @@ export default {
           })
         }
       })
+    },
+    async onFollow () {
+      this.isFollowLoading = true
+      if (this.article.is_followed) {
+        // 已经关注就取消关注
+        await deleteFollow(this.article.aut_id)
+        // this.article.is_followed = false
+      } else {
+        // 未关注就添加关注
+        await addFollow(this.article.aut_id)
+        // this.article.is_followed = true
+      }
+      this.article.is_followed = !this.article.is_followed
+      this.isFollowLoading = false
     }
   },
 
