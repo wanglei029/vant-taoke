@@ -3,7 +3,8 @@
     <transition name="fade">
       <div class="top-nav"
            v-show="showTopNav">
-        <div class="back">
+        <div class="back"
+             @click="$router.back()">
           <van-icon name="arrow-left" />
         </div>
         <div class="more">
@@ -19,7 +20,15 @@
                name="goods">
         <van-image class="goods-img"
                    fit="cover"
-                   :src="goods.mainPic" />
+                   :src="goods.mainPic">
+          <template v-slot:loading>
+            <van-loading type="spinner"
+                         size="100" />
+          </template>
+        </van-image>
+        <!-- <van-image class="goods-img"
+                   fit="cover"
+                   :src="goods.mainPic" /> -->
       </van-tab>
       <van-tab title="评价"
                name="common">
@@ -36,7 +45,8 @@
       <div slot="nav-left"
            class="wap-nav-placeholder"></div>
       <div slot="nav-left"
-           class="wap-nav-wrap">
+           class="wap-nav-wrap"
+           @click="$router.back()">
         <van-icon name="arrow-left" />
       </div>
       <div slot="nav-right"
@@ -51,6 +61,7 @@
 
 <script>
 import { getGoodsDetails, getSimilerGoods } from '@/api/goods'
+
 export default {
   name: 'Goods',
   props: {},
@@ -68,6 +79,7 @@ export default {
   created () {
     window.addEventListener('scroll', this.handleScroll)
     this.loadGoodsDetails()
+    console.log(this.buyRecords)
   },
 
   mounted () { },
@@ -90,7 +102,7 @@ export default {
     },
     handleScroll () {
       const top = document.documentElement.scrollTop
-      if (top > 46) {
+      if (top > 66) {
         this.showTopNav = false
         // document.getElementsByClassName('van-tabs')[0].firstElementChild.style.display = 'block'
         let opacity = top / 52
@@ -176,5 +188,18 @@ export default {
       width: 100%;
     }
   }
+  // /deep/.van-notice-bar {
+  //   width: 60%;
+  //   height: 25px;
+  //   top: -50px;
+  //   background-color: rgba(0, 0, 0, 0.4);
+  //   color: #fff;
+  //   margin-left: 15px;
+  //   border-radius: 10px;
+  // }
+  // .notice-swipe {
+  //   height: 40px;
+  //   line-height: 40px;
+  // }
 }
 </style>
